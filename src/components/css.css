@@ -1,0 +1,50 @@
+#iphone {
+  float:left;
+  left: 350px;
+  padding-top: 15px;
+  position: absolute;
+}
+
+#leftPanel{
+  float:left;
+  position: absolute;
+}
+
+#surveyQuestions{
+  position:absolute;
+  left:453px;
+  top: 57px;
+  height: 269px;
+  width: 148px;
+  overflow: scroll;
+  margin-right: 1px;
+}
+p {
+  border: 2px solid black;
+  text-align: left;
+  font-size: 12px;
+  padding: 2px;
+}
+
+#question {
+  border: 2px solid black;
+  margin-bottom: 1px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+#choices:first-child {
+  border-top: 2px solid black;
+}
+
+#choices {
+  margin: 0px;
+  border-top: 0px;
+  border-radius: 5px;
+}
+
+#answer {
+  border: 2px solid blue;
+  text-align: right;
+  border-radius: 5px;
+}
