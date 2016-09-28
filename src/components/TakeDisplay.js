@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class PreviewDisplay extends React.Component {
+class TakeDisplay extends React.Component {
   constructor(props) {
     super(props);
 
@@ -20,6 +20,8 @@ class PreviewDisplay extends React.Component {
     }
 
     this.handleRadioChange = this.handleRadioChange.bind(this);
+    this.submitForm = this.submitForm.bind(this);
+    this.clear = this.clear.bind(this);
   }
 
   handleRadioChange(event) {
@@ -27,6 +29,33 @@ class PreviewDisplay extends React.Component {
     var tempState = Object.assign({}, this.state);
     tempState['q'+questionNum+'Selection'] = event.target.id.slice(1);
     this.setState(tempState);
+  }
+
+  submitForm(event) {
+    event.preventDefault();
+    var result = {};
+    for (var key in this.state) {
+      if (this.state[key] !== '') {
+        result[key] = this.state[key];
+      }
+    }
+    this.props.saveSurveyResult(result);
+    this.clear();
+  }
+
+  clear() {
+    this.setState({
+      q0Selection: '',
+      q1Selection: '',
+      q2Selection: '',
+      q3Selection: '',
+      q4Selection: '',
+      q5Selection: '',
+      q6Selection: '',
+      q7Selection: '',
+      q8Selection: '',
+      q9Selection: ''
+    })
   }
 
   render() {
@@ -41,21 +70,20 @@ class PreviewDisplay extends React.Component {
           return (
             <div key={i}>
             {indQuestion.questionNumber + '. ' + indQuestion.actualQuestion}
-            <form>
+              <br />
               <input
               id={i + 'resp1'}
               type='radio'
-              value={indQuestion.response1}
+              value={indQuestion.resp1}
               onChange={that.handleRadioChange}
-              checked={that.state['q'+i+'Selection'] === 'resp1'} /> { indQuestion.response1 }
+              checked={that.state['q'+i+'Selection'] === 'resp1'} /> { indQuestion.resp1 }
               <br />
               <input
               id={i + 'resp2'}
               type='radio'
-              value={indQuestion.response2}
+              value={indQuestion.resp2}
               onChange={that.handleRadioChange}
-              checked={that.state['q'+i+'Selection'] === 'resp2'} /> { indQuestion.response2 }
-            </form>
+              checked={that.state['q'+i+'Selection'] === 'resp2'} /> { indQuestion.resp2 }
             </div>
           )
         }
@@ -64,35 +92,33 @@ class PreviewDisplay extends React.Component {
             <div key={i}>
             {indQuestion.questionNumber + '. ' + indQuestion.actualQuestion}
             <br />
-            <form>
               <input
               id={i + 'resp1'}
               type='radio'
-              value={indQuestion.response1}
+              value={indQuestion.resp1}
               onChange={that.handleRadioChange}
-              checked={that.state['q'+i+'Selection'] === 'resp1'} /> { indQuestion.response1 }
+              checked={that.state['q'+i+'Selection'] === 'resp1'} /> { indQuestion.resp1 }
               <br />
               <input
               id={i + 'resp2'}
               type='radio'
-              value={indQuestion.response2}
+              value={indQuestion.resp2}
               onChange={that.handleRadioChange}
-              checked={that.state['q'+i+'Selection'] === 'resp2'} /> { indQuestion.response2 }
+              checked={that.state['q'+i+'Selection'] === 'resp2'} /> { indQuestion.resp2 }
               <br />
               <input
               id={i + 'resp3'}
               type='radio'
-              value={indQuestion.response3}
+              value={indQuestion.resp3}
               onChange={that.handleRadioChange}
-              checked={that.state['q'+i+'Selection'] === 'resp3'} /> { indQuestion.response3 }
+              checked={that.state['q'+i+'Selection'] === 'resp3'} /> { indQuestion.resp3 }
               <br />
               <input
               id={i + 'resp4'}
               type='radio'
-              value={indQuestion.response4}
+              value={indQuestion.resp4}
               onChange={that.handleRadioChange}
-              checked={that.state['q'+i+'Selection'] === 'resp4'} /> { indQuestion.response4 }
-            </form>
+              checked={that.state['q'+i+'Selection'] === 'resp4'} /> { indQuestion.resp4 }
             </div>
           )
         }
@@ -102,12 +128,15 @@ class PreviewDisplay extends React.Component {
     return (
       <div>
       <h1> {this.props.state.surveyTitle} </h1>
+      <form onSubmit={this.submitForm}>
       <div> { surveyQuestions } </div>
+      <input type="submit" value="Submit" onClick={this.submitForm}/>
+      </form>
       </div>
     );
   }
 }
 
-// PreviewDisplay.propTypes = {};
+// TakeDisplay.propTypes = {};
 
-export default PreviewDisplay;
+export default TakeDisplay;

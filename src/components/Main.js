@@ -6,6 +6,7 @@ import Question from './Question';
 import Response from './Response';
 import SurveyTitle from './SurveyTitle';
 import TakeDisplay from './TakeDisplay';
+import ResultDisplay from './ResultDisplay';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,12 +15,13 @@ class App extends React.Component {
       surveyTitle: undefined,
       questionType: 'Boolean',
       newQuestion: '',
-      response1: '',
-      response2: '',
-      response3: '',
-      response4: '',
+      resp1: '',
+      resp2: '',
+      resp3: '',
+      resp4: '',
       allQuestions: [],
-      mode: 'add'
+      mode: 'add',
+      results: []
     }
 
     //function bindings
@@ -30,6 +32,8 @@ class App extends React.Component {
     this.addQuestion = this.addQuestion.bind(this);
     this.clear = this.clear.bind(this);
     this.takeAddToggle = this.takeAddToggle.bind(this);
+    this.saveSurveyResult = this.saveSurveyResult.bind(this);
+    this.resultTakeToggle = this.resultTakeToggle.bind(this);
 
     this.testButton = this.testButton.bind(this);
   }
@@ -41,37 +45,37 @@ class App extends React.Component {
       {
         actualQuestion: 'What is your favorite noodle dish?',
         questionType: 'Multiple',
-        response1: 'Naengmyun',
-        response2: 'Ramen',
-        response3: 'Chow Mein',
-        response4: 'Pho',
+        resp1: 'Naengmyun',
+        resp2: 'Ramen',
+        resp3: 'Chow Mein',
+        resp4: 'Pho',
         questionNumber: 1
       }, {
         actualQuestion: 'What is your favorite food?',
         questionType: 'Multiple',
-        response1: 'Sushi',
-        response2: 'Bibimbap',
-        response3: 'Fried Chicken',
-        response4: 'Ramen',
+        resp1: 'Sushi',
+        resp2: 'Bibimbap',
+        resp3: 'Fried Chicken',
+        resp4: 'Ramen',
         questionNumber: 2
       }, {
         actualQuestion: 'Do you prefer Steak or Chicken?',
         questionType: 'Boolean',
-        response1: 'Steak',
-        response2: 'Chicken',
+        resp1: 'Steak',
+        resp2: 'Chicken',
         questionNumber: 3
       }, {
         actualQuestion: 'Do you prefer McDonalds or Burger King?',
         questionType: 'Boolean',
-        response1: 'McDonalds',
-        response2: 'Burger King',
+        resp1: 'McDonalds',
+        resp2: 'Burger King',
         questionNumber: 4
       }, {
         actualQuestion: 'Do you prefer KFC or Popeyes?',
         questionType: 'Boolean',
-        response1: 'KFC',
-        response2: 'Popeyes',
-        questionNumber: 4
+        resp1: 'KFC',
+        resp2: 'Popeyes',
+        questionNumber: 5
       }]
     });
     console.log(this.state);
@@ -97,7 +101,7 @@ class App extends React.Component {
 
   setResponse(num, resp) {
     var tempState = Object.assign({}, this.state);
-    tempState['response' + num] = resp;
+    tempState['resp' + num] = resp;
     this.setState(tempState);
   }
 
@@ -107,8 +111,8 @@ class App extends React.Component {
       question = {
         actualQuestion: this.state.newQuestion,
         questionType: this.state.questionType,
-        response1: this.state.response1,
-        response2: this.state.response2,
+        resp1: this.state.resp1,
+        resp2: this.state.resp2,
         questionNumber: this.state.allQuestions.length + 1
       }
     }
@@ -116,10 +120,10 @@ class App extends React.Component {
       question = {
         actualQuestion: this.state.newQuestion,
         questionType: this.state.questionType,
-        response1: this.state.response1,
-        response2: this.state.response2,
-        response3: this.state.response3,
-        response4: this.state.response4,
+        resp1: this.state.resp1,
+        resp2: this.state.resp2,
+        resp3: this.state.resp3,
+        resp4: this.state.resp4,
         questionNumber: this.state.allQuestions.length + 1
       }
     }
@@ -130,10 +134,10 @@ class App extends React.Component {
     this.setState({
       allQuestions: tempAllQuestions,
       newQuestion: '',
-      response1: '',
-      response2: '',
-      response3: '',
-      response4: ''
+      resp1: '',
+      resp2: '',
+      resp3: '',
+      resp4: ''
     });
 
     this.clear();
@@ -154,6 +158,27 @@ class App extends React.Component {
     if(this.state.mode === 'take') {
       this.setState({
         mode: 'add'
+      });
+    }
+  }
+
+  saveSurveyResult(result) {
+    var tempState = this.state.results.slice(0);
+    tempState.push(result);
+    this.setState({
+      results: tempState
+    });
+  }
+
+  resultTakeToggle() {
+    if(this.state.mode === 'take') {
+      this.setState({
+        mode:'result'
+      });
+    }
+    if(this.state.mode === 'result') {
+      this.setState({
+        mode:'take'
       });
     }
   }
@@ -185,22 +210,22 @@ class App extends React.Component {
       iphonePreview = this.state.allQuestions.map(
         function(elem, i) {
           if(elem.questionType === 'Boolean') {
-            var ans = elem.response2;
+            var ans = elem.resp2;
             var choices = (
               <div>
-              <p id="choices"> { '1.' + elem.response1 } </p>
-              <p id="choices"> { '2.' + elem.response2 } </p>
+              <p id="choices"> { '1.' + elem.resp1 } </p>
+              <p id="choices"> { '2.' + elem.resp2 } </p>
               </div>
             )
           }
           if(elem.questionType === 'Multiple') {
-            var ans = elem.response4;
+            var ans = elem.resp4;
             var choices = (
               <div>
-              <p id="choices"> { '1.' + elem.response1 } </p>
-              <p id="choices"> { '2.' + elem.response2 } </p>
-              <p id="choices"> { '3.' + elem.response3 } </p>
-              <p id="choices"> { '4.' + elem.response4 } </p>
+              <p id="choices"> { '1.' + elem.resp1 } </p>
+              <p id="choices"> { '2.' + elem.resp2 } </p>
+              <p id="choices"> { '3.' + elem.resp3 } </p>
+              <p id="choices"> { '4.' + elem.resp4 } </p>
               </div>
             )
           }
@@ -227,9 +252,10 @@ class App extends React.Component {
         <div>
         <div id="leftPanel" >
         <h1>Create Your Own Survey</h1>
-        <input type="submit" value="TEST" onClick={this.testButton} />
-
+        
         <br />
+        <br />
+
 
         <SurveyTitle
           setSurveyTitle={this.setSurveyTitle}
@@ -258,6 +284,9 @@ class App extends React.Component {
 
         <br />
         { quickPreview }
+        <br /> <br /> <br /> <br />
+        <br />
+        <input type="submit" value="TEST" onClick={this.testButton} />
         </div>
 
 
@@ -279,9 +308,23 @@ class App extends React.Component {
         <div>
         <h1> Survey Taking Mode </h1>
         <input type="submit" value="Add More Questions" onClick={this.takeAddToggle} />
+        <input type="submit" value="View Results" onClick={this.resultTakeToggle} />
         <br />
         <hr />
         <TakeDisplay
+          state={this.state}
+          saveSurveyResult={this.saveSurveyResult}
+        />
+        </div>
+      )
+    } else if (this.state.mode === 'result') {
+      currentDisplay = (
+        <div>
+        <h1> Result Viewing Mode </h1>
+        <input type="submit" value="Take The Survey!" onClick={this.resultTakeToggle} />
+        <br />
+        <hr />
+        <ResultDisplay
           state={this.state}
         />
         </div>

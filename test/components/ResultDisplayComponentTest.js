@@ -7,16 +7,16 @@
 // import TestUtils from 'react-addons-test-utils';
 import createComponent from 'helpers/shallowRenderHelper';
 
-import PreviewDisplayComponent from 'components//PreviewDisplayComponent.js';
+import ResultDisplayComponent from 'components//ResultDisplayComponent.js';
 
-describe('PreviewDisplayComponent', () => {
+describe('ResultDisplayComponent', () => {
   let component;
 
   beforeEach(() => {
-    component = createComponent(PreviewDisplayComponent);
+    component = createComponent(ResultDisplayComponent);
   });
 
   it('should have its component name as default className', () => {
-    expect(component.props.className).to.equal('previewdisplay-component');
+    expect(component.props.className).to.equal('resultdisplay-component');
   });
 });

@@ -12,7 +12,7 @@
 
 #surveyQuestions{
   position:absolute;
-  left:453px;
+  left:451px;
   top: 57px;
   height: 269px;
   width: 148px;
@@ -47,4 +47,12 @@ p {
   border: 2px solid blue;
   text-align: right;
   border-radius: 5px;
+}
+
+#indQuestion {
+  font-style: italic;
+}
+
+#indPerson {
+  font-weight: bold;
 }
