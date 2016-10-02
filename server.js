@@ -32,6 +32,11 @@ if (isDeveloping) {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'src/index.html')));
     res.end();
   });
+
+
+
+
+
 } else {
   app.use(express.static(__dirname + '/src'));
   app.get('*', function response(req, res) {
