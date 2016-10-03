@@ -6,6 +6,8 @@ const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('./webpack.config.js');
+const swaggerJSDoc = require('swagger-jsdoc');
+const models = require('./server/models/index');
 
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
@@ -26,22 +28,40 @@ if (isDeveloping) {
     }
   });
 
+  const swaggerDefinition = {
+  info: {
+    title: 'Node Swagger API',
+    version: '1.0.0',
+    description: 'Demonstrating how to desribe a RESTful API with Swagger',
+  },
+  host: 'localhost:' + port,
+  basePath: '/',
+};
+
+
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
-  app.get('*', function response(req, res) {
+  app.get('/', function response(req, res) {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'src/index.html')));
     res.end();
   });
 
-
-
-
+  app.get('/takes', function(req, res) {
+  models.Take.findAll({}).then(function(takes) {
+    res.json(takes);
+  });
+});
 
 } else {
   app.use(express.static(__dirname + '/src'));
   app.get('*', function response(req, res) {
     res.sendFile(path.join(__dirname, 'src/index.html'));
   });
+  app.get('/takes', function(req, res) {
+  models.Take.findAll({}).then(function(takes) {
+    res.json(takes);
+  });
+});
 }
 
 app.listen(port, '0.0.0.0', function onStart(err) {
